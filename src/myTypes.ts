@@ -20,7 +20,3 @@ export type SubmarineInformation = {
   departure_time: string;
   required_time: string;
 };
-
-export class DatabaseException extends Error {
-  static DUPLICATION_EXCEPTION: string = '[DATABASE] already_exists_in_database';
-}

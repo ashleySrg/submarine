@@ -48,7 +48,7 @@ client.on(discord_js_1.Events.InteractionCreate, (interaction) => __awaiter(void
         yield command.execute(interaction);
     }
     catch (error) {
-        console.error(`Error executing ${interaction.commandName}`);
+        console.error(`[index.js]Error executing ${interaction.commandName}`);
         console.error(error);
     }
 }));
