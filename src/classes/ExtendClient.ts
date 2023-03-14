@@ -15,11 +15,13 @@ export class ExtendClient extends Client {
     constructor(options: ClientOptions) {
         super(options);
         this.loadCommands();
+
     }
     public commands: Collection<string, Command> = new Collection();
     private loadCommands() {
-        const commandPath = path.join(__dirname, '..');
+        const commandPath = path.join(__dirname, '../commands');
         const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'));
+        console.log(commandPath);
 
         for (const file of commandFiles) {
             const filePath = path.join(commandPath, file);
@@ -27,7 +29,7 @@ export class ExtendClient extends Client {
 
             if ('data' in command && 'execute' in command) {
                 this.commands.set(command.data.name, command);
-                console.log(`\n\u001b[32m[SUCCESS] ${command.data.name} was successfully registered.\u001b[0m`)
+                console.log(`(/)${command.data.name} was successfully registered.`)
             } else {
                 console.log(`[WARNING] The command at ${filePath} is missing a "data" or "execute" property.`);
             }

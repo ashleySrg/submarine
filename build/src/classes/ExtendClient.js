@@ -14,14 +14,15 @@ class ExtendClient extends discord_js_1.Client {
         this.loadCommands();
     }
     loadCommands() {
-        const commandPath = node_path_1.default.join(__dirname, '..');
+        const commandPath = node_path_1.default.join(__dirname, '../commands');
         const commandFiles = node_fs_1.default.readdirSync(commandPath).filter(file => file.endsWith('.js'));
+        console.log(commandPath);
         for (const file of commandFiles) {
             const filePath = node_path_1.default.join(commandPath, file);
             const command = require(filePath);
             if ('data' in command && 'execute' in command) {
                 this.commands.set(command.data.name, command);
-                console.log(`\n\u001b[32m[SUCCESS] ${command.data.name} was successfully registered.\u001b[0m`);
+                console.log(`(/)${command.data.name} was successfully registered.`);
             }
             else {
                 console.log(`[WARNING] The command at ${filePath} is missing a "data" or "execute" property.`);
