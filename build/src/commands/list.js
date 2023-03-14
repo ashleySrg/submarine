@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const choices_1 = require("../choices");
+const choices_1 = require("./types/choices");
 const getSubmarineList_1 = require("./functions/getSubmarineList");
 const wait = require('util').promisify(setTimeout);
 const LoadingEmoji = ':arrows_counterclockwise:';
@@ -43,9 +43,9 @@ module.exports = {
             yield interaction.editReply(LoadingEmoji + 'Fecthing Data From DB');
             try {
                 const result = yield (0, getSubmarineList_1.getSubmarineList)(server);
-                yield interaction.editReply(CompleteEmoji + 'Fetching Data from Database\n' + LoadingEmoji + 'Generating Result Table');
+                yield interaction.editReply(CompleteEmoji + 'Fetching Data from DB\n' + LoadingEmoji + 'Generating Result Table');
                 const embedMessage = createTableEmbed(result);
-                yield interaction.editReply(CompleteEmoji + 'Fetching Data from Database\n' + CompleteEmoji + 'Generating Result Table');
+                yield interaction.editReply(CompleteEmoji + 'Fetching Data from DB\n' + CompleteEmoji + 'Generating Result Table');
                 yield interaction.editReply({ embeds: [embedMessage] });
                 yield interaction.editReply(CompleteEmoji + 'Request Complete');
             }

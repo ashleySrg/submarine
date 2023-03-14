@@ -1,5 +1,6 @@
-import { SubmarineInformation } from "../../myTypes";
+import { SubmarineInformation } from "./myTypes";
 import { DatabaseException } from "./exceptionTypes";
+import { parseISO8601Duration } from "./parseISO8601Duration";
 const sqlite3 = require('sqlite3').verbose();
 
 export const insertNewSubmarine = async (server: String, numbering: number, name: String): Promise<void> => {
@@ -8,7 +9,7 @@ export const insertNewSubmarine = async (server: String, numbering: number, name
     const params = [server, numbering];
     let result: SubmarineInformation | null;
 
-    await new Promise<void>((resolove, reject) => {
+    await new Promise<void>((resolve, reject) => {
         db.serialize(() => {
             db.run("CREATE TABLE IF NOT EXISTS submarine_list (server TEXT, numbering INTEGER, name TEXT, departure_time TEXT, required_time TEXT)");
             db.get(getDuplicateRows, params, (err: Error | null, row: SubmarineInformation | null) => {
@@ -17,7 +18,7 @@ export const insertNewSubmarine = async (server: String, numbering: number, name
                     reject(err);
                 } else {
                     result = row;
-                    resolove();
+                    resolve();
                 }
             });
         });
@@ -25,8 +26,10 @@ export const insertNewSubmarine = async (server: String, numbering: number, name
 
     if (result!) throw Error(DatabaseException.DUPLICATION_EXCEPTION);
 
+    const nowTime: string = new Date().toISOString();
+    const tmpRequiredTime: number = parseISO8601Duration('PT0S');
     db.serialize(() => {
-        db.run(`INSERT INTO submarine_list (server, numbering, name, departure_time, required_time) VALUES ('${server}', ${numbering}, '${name}', 0, 0)`);
+        db.run(`INSERT INTO submarine_list (server, numbering, name, departure_time, required_time) VALUES ('${server}', ${numbering}, '${name}', '${nowTime}', '${tmpRequiredTime}')`);
         db.close();
     });
 }

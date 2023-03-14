@@ -1,5 +1,6 @@
 #files
 .env
+*.db
 
 #folders
 node_modules

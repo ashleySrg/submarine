@@ -11,13 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.insertNewSubmarine = void 0;
 const exceptionTypes_1 = require("./exceptionTypes");
+const parseISO8601Duration_1 = require("./parseISO8601Duration");
 const sqlite3 = require('sqlite3').verbose();
 const insertNewSubmarine = (server, numbering, name) => __awaiter(void 0, void 0, void 0, function* () {
     const db = new sqlite3.Database('submarines.db');
     const getDuplicateRows = "SELECT * FROM submarine_list WHERE server = ? AND numbering = ?";
     const params = [server, numbering];
     let result;
-    yield new Promise((resolove, reject) => {
+    yield new Promise((resolve, reject) => {
         db.serialize(() => {
             db.run("CREATE TABLE IF NOT EXISTS submarine_list (server TEXT, numbering INTEGER, name TEXT, departure_time TEXT, required_time TEXT)");
             db.get(getDuplicateRows, params, (err, row) => {
@@ -27,15 +28,17 @@ const insertNewSubmarine = (server, numbering, name) => __awaiter(void 0, void 0
                 }
                 else {
                     result = row;
-                    resolove();
+                    resolve();
                 }
             });
         });
     });
     if (result)
         throw Error(exceptionTypes_1.DatabaseException.DUPLICATION_EXCEPTION);
+    const nowTime = new Date().toISOString();
+    const tmpRequiredTime = (0, parseISO8601Duration_1.parseISO8601Duration)('PT0S');
     db.serialize(() => {
-        db.run(`INSERT INTO submarine_list (server, numbering, name, departure_time, required_time) VALUES ('${server}', ${numbering}, '${name}', 0, 0)`);
+        db.run(`INSERT INTO submarine_list (server, numbering, name, departure_time, required_time) VALUES ('${server}', ${numbering}, '${name}', '${nowTime}', '${tmpRequiredTime}')`);
         db.close();
     });
 });

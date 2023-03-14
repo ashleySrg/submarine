@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 const wait = require('util').promisify(setTimeout);
 import { insertNewSubmarine } from "./functions/insertNewSubmarine";
-import { servers, numbers } from "../choices";
+import { servers, numbers } from "./types/choices";
 
 module.exports = {
     data: new SlashCommandBuilder()

@@ -1,4 +1,4 @@
-import { SubmarineInformation } from "../../myTypes";
+import { SubmarineInformation } from "./myTypes";
 const sqlite3 = require('sqlite3').verbose();
 
 export const getSubmarineList = async (server: string): Promise<SubmarineInformation[]> => {

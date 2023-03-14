@@ -6,25 +6,34 @@
   "scripts": {
     "start": "node build/index.js",
     "compile": "tsc -p .",
-    "regcmd": "node deploy_commands.js",
-    "refresh": "npm run compile & npm run regcmd"
+    "clean": "rimraf build",
+    "regcmd": "node ./scripts/deploy_commands.js",
+    "refresh": "npm run compile && npm run regcmd",
+    "mkdb": "node ./scripts/createNewDatabase.js",
+    "rmdb": "rimraf ./resources/submarines.db",
+    "rsdb": "npm run rmdb && npm run mkdb",
+    "lidb": "node ./scripts/readDatabase.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node-cron": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "eslint": "^8.34.0",
     "eslint-config-standard-with-typescript": "^34.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
+    "rimraf": "^4.4.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "columnify": "^1.6.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
+    "node-cron": "^3.0.2",
     "sqlite3": "^5.1.4"
   }
 }

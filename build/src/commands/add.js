@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const wait = require('util').promisify(setTimeout);
 const insertNewSubmarine_1 = require("./functions/insertNewSubmarine");
-const choices_1 = require("../choices");
+const choices_1 = require("./types/choices");
 module.exports = {
     data: new discord_js_1.SlashCommandBuilder()
         .setName('add')

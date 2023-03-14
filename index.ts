@@ -1,23 +1,26 @@
-import { Message, Client, Events, GatewayIntentBits } from 'discord.js'
-import dotenv from 'dotenv'
-import { ExtendClient } from './myTypes';
-import { loadCommands } from './commandLoader';
+import { Message, Client, Events, GatewayIntentBits } from 'discord.js';
+import dotenv from 'dotenv';
+import { ExtendClient } from './src/classes/ExtendClient';
+import cron from 'node-cron';
 
 dotenv.config();
 
-const client: ExtendClient = new ExtendClient({
+//潜水艦の一覧を取得し、時間が迫っているか通知する。
+cron.schedule('*/10 * * * * *', () => {
+	console.log(`定期実行 @ ${new Date().toString()}`);
+});
+
+const client = new ExtendClient({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent
-    ],
+	],
 });
 
-loadCommands(client);
-
 client.once(Events.ClientReady, (c: Client) => {
-    console.log(`Ready! Logged in as ${c.user?.tag}`);
+    console.log(`\n\u001b[32mReady! Logged in as ${c.user?.tag}\u001b[0m`);
 });
 
 client.on(Events.MessageCreate, async (message: Message) => {
@@ -29,8 +32,7 @@ client.on(Events.MessageCreate, async (message: Message) => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
-    const extendClient = interaction.client as ExtendClient;
-	const command = extendClient.commands.get(interaction.commandName);
+    const command = (interaction.client as ExtendClient).commands.get(interaction.commandName);
 
 	if (!command) {
 		console.error(`No command matching ${interaction.commandName} was found.`);

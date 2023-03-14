@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } from "discord.js";
-import { serversPlusAll } from "../choices";
-import { SubmarineInformation } from "../myTypes";
+import { serversPlusAll } from "./types/choices";
+import { SubmarineInformation } from "./functions/myTypes";
 import { getSubmarineList } from "./functions/getSubmarineList";
 const wait = require('util').promisify(setTimeout);
 
