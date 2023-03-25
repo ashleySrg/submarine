@@ -1,10 +1,8 @@
 import { RequestSQLParams, SubmarineInformation } from "./myTypes";
-import path from "node:path";
 import { databaseDirectory } from "../settings/settings";
-import { servers } from "../types/choices";
 const sqlite3 = require('sqlite3').verbose();
 
-export const getSubmarineList = async (server: string, numbering?: string): Promise<SubmarineInformation[]> => {
+export const getSubmarineListForDisplay = async (server: string, numbering?: string): Promise<SubmarineInformation[]> => {
     const db = new sqlite3.Database(databaseDirectory);
     const submarineList: SubmarineInformation[] = await new Promise<SubmarineInformation[]>((resolve, reject) => {
         const requestSqlParams = getRowsSQL(server, numbering);
@@ -28,13 +26,13 @@ const getRowsSQL = (server: string, numbering?: string): RequestSQLParams => {
     };
 
     if (server === 'All') {
-        requestSqlParams.request = "SELECT server, numbering, name, departure_time, required_time, arrival_time FROM submarine_list";
+        requestSqlParams.request = "SELECT server, numbering AS num, name, departure_show AS departure, duration_show AS duration, arrival_show AS arrival FROM submarine_list";
         requestSqlParams.params = [];
     } else if (numbering !== undefined) {
-        requestSqlParams.request = `SELECT server, numbering, name, departure_time, required_time, arrival_time FROM submarine_list WHERE server = ? AND numbering = ?`;
+        requestSqlParams.request = `SELECT server, numbering AS num, name, departure_show AS departure, duration_show AS duration, arrival_show AS arrival WHERE server = ? AND numbering = ?`;
         requestSqlParams.params = [server, numbering];
     } else {
-        requestSqlParams.request = `SELECT server, numbering, name, departure_time, required_time, arrival_time FROM submarine_list WHERE server = ?`;
+        requestSqlParams.request = `SELECT server, numbering AS num, name, departure_show AS departure, duration_show AS duration, arrival_show AS arrival WHERE server = ?`;
         requestSqlParams.params = [server];
     }
 

@@ -2,13 +2,12 @@ import { Message, Client, Events, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
 import { ExtendClient } from './src/classes/ExtendClient';
 import cron from 'node-cron';
+import { checkTime } from './src/functions/checkTime';
 
 dotenv.config();
 
 //潜水艦の一覧を取得し、時間が迫っているか通知する。
-cron.schedule('*/10 * * * * *', () => {
-	console.log(`定期実行 @ ${new Date().toString()}`);
-});
+cron.schedule('*/20 * * * * *', checkTime);
 
 const client = new ExtendClient({
     intents: [
@@ -19,8 +18,9 @@ const client = new ExtendClient({
 	],
 });
 
-client.once(Events.ClientReady, (c: Client) => {
-    console.log(`\n\u001b[32mReady! Logged in as ${c.user?.tag}\u001b[0m`);
+client.once(Events.ClientReady, async (c: Client) => {
+	console.log(`\n\u001b[32mReady! Logged in as ${c.user?.tag}\u001b[0m`);
+	await checkTime();
 });
 
 client.on(Events.MessageCreate, async (message: Message) => {

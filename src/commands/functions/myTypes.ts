@@ -4,4 +4,10 @@ export type SubmarineInformation = {
   name: string;
   departure_time: string;
   required_time: string;
+  arrival_time: string;
 };
+
+export type RequestSQLParams = {
+    request: string;
+    params: string[];
+}

@@ -1,11 +1,15 @@
 export const parseISO8601Duration = (duration: string): number => {
-    const regex: RegExp = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
-    const matches: RegExpExecArray | null = regex.exec(duration);
-    if (!matches) throw new Error('Invalid duration format');
+  const regex: RegExp = /P(?:([\d.]+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?/;
+  const matches: RegExpExecArray | null = regex.exec(duration);
+  if (!matches) throw new Error('Invalid duration format');
 
-    const hours = parseInt(matches[1] || '0');
-    const minutes = parseInt(matches[2] || '0');
-    const seconds = parseInt(matches[3] || '0');
+  const days = parseFloat(matches[1] || '0');
+  const hours = parseFloat(matches[2] || '0');
+  const minutes = parseFloat(matches[3] || '0');
+  const seconds = parseFloat(matches[4] || '0');
 
-    return ((hours * 60 + minutes) * 60 + seconds) * 1000;
+  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+  const totalMilliseconds = (days * 24 * 60 * 60 + totalSeconds) * 1000;
+
+  return totalMilliseconds;
 }

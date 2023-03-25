@@ -42,10 +42,10 @@ module.exports = {
         await interaction.editReply(LoadingEmoji + 'Fecthing Data From DB');
 
         try {
-            const result: SubmarineInformation[] = await getSubmarineList(server!);
+            const result = await getSubmarineList(server!);
             await interaction.editReply(CompleteEmoji + 'Fetching Data from DB\n' + LoadingEmoji + 'Generating Result Table');
 
-            const embedMessage = createTableEmbed(result);
+            const embedMessage = createTableEmbed(result!);
             await interaction.editReply(CompleteEmoji + 'Fetching Data from DB\n' + CompleteEmoji + 'Generating Result Table');
             await interaction.editReply({ embeds: [embedMessage] });
             await interaction.editReply(CompleteEmoji + 'Request Complete');

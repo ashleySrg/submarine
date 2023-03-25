@@ -13,7 +13,7 @@ module.exports = {
                 .setRequired(true)
                 .addChoices(...servers))
         
-        .addIntegerOption(option => 
+        .addStringOption(option => 
             option.setName('numbering')
                 .setDescription('登録したい潜水艦の登録番号')
                 .setRequired(true)
@@ -28,18 +28,18 @@ module.exports = {
         await interaction.deferReply();
 
         const server: string | null = interaction.options.getString('server');
-        const numbering: number | null = interaction.options.getInteger('numbering');
+        const numbering: string | null = interaction.options.getString('numbering');
         const name: string | null = interaction.options.getString('name');
 
         if (server && numbering && name) {
             try {
                 await insertNewSubmarine(server, numbering, name);
-                await interaction.editReply(`${server}の${numbering}番目の潜水艦「${name}」をDBに登録しました`);
+                await interaction.editReply(`登録完了:${server}#${numbering}:${name}`);
             } catch (err: any) {
                 console.log('[add.ts]' + err)
                 await interaction.editReply(`DBに登録できませんでした。`);
             } finally {
-                await wait(5000);
+                await wait(10*1000);
                 await interaction.deleteReply();
             }
         }

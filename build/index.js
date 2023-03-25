@@ -16,11 +16,10 @@ const discord_js_1 = require("discord.js");
 const dotenv_1 = __importDefault(require("dotenv"));
 const ExtendClient_1 = require("./src/classes/ExtendClient");
 const node_cron_1 = __importDefault(require("node-cron"));
+const checkTime_1 = require("./src/functions/checkTime");
 dotenv_1.default.config();
 //潜水艦の一覧を取得し、時間が迫っているか通知する。
-node_cron_1.default.schedule('*/10 * * * * *', () => {
-    console.log(`定期実行 @ ${new Date().toString()}`);
-});
+node_cron_1.default.schedule('*/20 * * * * *', checkTime_1.checkTime);
 const client = new ExtendClient_1.ExtendClient({
     intents: [
         discord_js_1.GatewayIntentBits.Guilds,
@@ -29,10 +28,11 @@ const client = new ExtendClient_1.ExtendClient({
         discord_js_1.GatewayIntentBits.MessageContent
     ],
 });
-client.once(discord_js_1.Events.ClientReady, (c) => {
+client.once(discord_js_1.Events.ClientReady, (c) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     console.log(`\n\u001b[32mReady! Logged in as ${(_a = c.user) === null || _a === void 0 ? void 0 : _a.tag}\u001b[0m`);
-});
+    yield (0, checkTime_1.checkTime)();
+}));
 client.on(discord_js_1.Events.MessageCreate, (message) => __awaiter(void 0, void 0, void 0, function* () {
     if (message.author.bot) {
         return;

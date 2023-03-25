@@ -1,6 +1,8 @@
+#foders
+.vscode
+node_modules
+resources
+
+
 #files
 .env
-*.db
-
-#folders
-node_modules

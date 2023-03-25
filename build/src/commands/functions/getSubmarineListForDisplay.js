@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSubmarineList = void 0;
+exports.getSubmarineListForDisplay = void 0;
 const settings_1 = require("../settings/settings");
 const sqlite3 = require('sqlite3').verbose();
-const getSubmarineList = (server, numbering) => __awaiter(void 0, void 0, void 0, function* () {
+const getSubmarineListForDisplay = (server, numbering) => __awaiter(void 0, void 0, void 0, function* () {
     const db = new sqlite3.Database(settings_1.databaseDirectory);
     const submarineList = yield new Promise((resolve, reject) => {
         const requestSqlParams = getRowsSQL(server, numbering);
@@ -29,22 +29,22 @@ const getSubmarineList = (server, numbering) => __awaiter(void 0, void 0, void 0
     });
     return submarineList;
 });
-exports.getSubmarineList = getSubmarineList;
+exports.getSubmarineListForDisplay = getSubmarineListForDisplay;
 const getRowsSQL = (server, numbering) => {
     let requestSqlParams = {
         request: "",
         params: []
     };
     if (server === 'All') {
-        requestSqlParams.request = "SELECT server, numbering, name, departure_time, required_time, arrival_time FROM submarine_list";
+        requestSqlParams.request = "SELECT server, numbering AS num, name, departure_show AS departure, duration_show AS duration, arrival_show AS arrival FROM submarine_list";
         requestSqlParams.params = [];
     }
     else if (numbering !== undefined) {
-        requestSqlParams.request = `SELECT server, numbering, name, departure_time, required_time, arrival_time FROM submarine_list WHERE server = ? AND numbering = ?`;
+        requestSqlParams.request = `SELECT server, numbering AS num, name, departure_show AS departure, duration_show AS duration, arrival_show AS arrival WHERE server = ? AND numbering = ?`;
         requestSqlParams.params = [server, numbering];
     }
     else {
-        requestSqlParams.request = `SELECT server, numbering, name, departure_time, required_time, arrival_time FROM submarine_list WHERE server = ?`;
+        requestSqlParams.request = `SELECT server, numbering AS num, name, departure_show AS departure, duration_show AS duration, arrival_show AS arrival WHERE server = ?`;
         requestSqlParams.params = [server];
     }
     return requestSqlParams;
