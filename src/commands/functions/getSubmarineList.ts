@@ -1,7 +1,5 @@
 import { RequestSQLParams, SubmarineInformation } from "./myTypes";
-import path from "node:path";
 import { databaseDirectory } from "../settings/settings";
-import { servers } from "../types/choices";
 const sqlite3 = require('sqlite3').verbose();
 
 export const getSubmarineList = async (server: string, numbering?: string): Promise<SubmarineInformation[]> => {
